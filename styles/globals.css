@@ -3,19 +3,40 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: rgb(9, 9, 11);
+  --text: rgb(250, 250, 250);
+  --bgSec: rgb(182, 182, 183);
+  --textSec: rgb(216, 216, 216);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --bg: rgb(9, 9, 11);
+    --text: rgb(250, 250, 250);
+    --bgSec: rgb(24, 24, 27);
+    --textSec: rgb(216, 216, 216);
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-color-scheme: light) {
+  :root {
+    --text: rgb(9, 9, 11);
+    --bg: rgb(250, 250, 250);
+    --textSec: rgb(24, 24, 27);
+    --bgSec: rgb(216, 216, 216);
+  }
+}
+
+::-webkit-scrollbar{display: none;}
+
+body, html, #__next {
+  color: var(--text);
+  background: var(--bg);
+  width: 100%;
+  height: 100%;
+  padding: 0%;
+  margin: 0%;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
