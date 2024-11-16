@@ -18,24 +18,20 @@ export function HoverBox({children, className=''}){
     </div>
 }
 
-export function HoverBox01({children, className}){
-    return <div className={`${className} bg-[var(--bgSec)] opacity-60 max-sm:active:opacity-100 sm:hover:opacity-100 size-9 rounded-md flex items-center justify-center relative p-2 cursor-pointer`}>
-        {children}
-    </div>
-}
 
-
-// Not complite On Working ...
 export function TypingHeading({text='', className='', speed=100}){
-    const [heading, setHeading] = useState([])
-    useEffect(() => {
-        let i=0
-        var textInterval = setInterval(() => {
-            if(i >= text.length) return clearInterval(textInterval)
-            setHeading((heading) => [...heading, text[i++]])
-        }, speed)
-    }, [])
-    return <div className={`${className}`}>
-        {heading.map(char => char)}
-    </div>
+    return <>
+        <style jsx>{`
+            @keyframes animation-0-to-1-opacity-scale{
+              0%{opacity: 0; scale: 0;}
+              100%{opacity: 1; scale: 1;}
+            }
+        `}</style>
+        <div className={`${className}`}>
+            {text.split('').map((char, index) => <span key={index} className="opacity-0 scale-0 transition-all" style={{
+                animation: 'animation-0-to-1-opacity-scale .1s forwards',
+                animationDelay: `${index*100}ms`
+            }}>{char}</span>)}
+        </div>
+    </> 
 }
