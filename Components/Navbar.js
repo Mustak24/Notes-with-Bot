@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { NormalBtn } from "./Button";
 import { CgProfile } from "react-icons/cg";
 import { UnderlineBox, Navicon, HoverBox } from "./Smallcss"
-
+import Popover, {TargetBox} from '@/Components/Popover'
 import { IoLogoGithub } from "react-icons/io";
 import { IoSearchSharp } from "react-icons/io5";
 import { TbBrandHeadlessui } from "react-icons/tb";
@@ -17,10 +17,11 @@ const navigation = {
         {title: 'Docs', href: '/docs'},
         {title: 'Notes', href: '/notes'},
         {title: 'Chats', href: '/chats'},
-    ]
+    ],
+    'login-page': []
 }
 
-export default function Navabr({navigator='user', title='App / Ui', logo=<TbBrandHeadlessui className="size-full" />, darkMode=true, themeChange=()=>{}}){
+export default function Navabar({navigator='user', title='Chat-Bot', logo=<TbBrandHeadlessui className="size-full" />, darkMode=true, themeChange=()=>{}}){
 
     const [isDarkMode, setDarkMode] = useState(darkMode)
     const [isNavOpen, setNavOpen] = useState(false)
@@ -68,15 +69,32 @@ export default function Navabr({navigator='user', title='App / Ui', logo=<TbBran
         </div>
         
         <div className="flex gap-2">
-            <NormalBtn className="max-sm:hidden"><span className="text-nowrap text-clip">Search Documentation ...</span></NormalBtn>
-            <button><HoverBox className="sm:hidden"><IoSearchSharp className="size-full" /></HoverBox></button>
-            <HoverBox><IoLogoGithub className="size-full" /></HoverBox>
-            <HoverBox><CgProfile className="size-full" /></HoverBox>
-            {darkMode && <button onClick={handleDarkMode}>
+            {navigator == 'user' && <>
+                <NormalBtn className="max-sm:hidden"><span className="text-nowrap text-clip">Search Documentation ...</span></NormalBtn>
+                <button><HoverBox className="sm:hidden"><IoSearchSharp className="size-full" /></HoverBox></button>
+            </>}
+
+            <Popover>
+                <HoverBox><IoLogoGithub className="size-full" /></HoverBox>
+                <TargetBox>Git-Hub</TargetBox>
+            </Popover>
+
+            <Popover>
+                <HoverBox><CgProfile className="size-full" /></HoverBox>
+                <TargetBox>
+                    <Link href={'/login'} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">Login</Link>
+                </TargetBox>
+            </Popover>
+
+            {darkMode && <div onClick={handleDarkMode}>
+            <Popover>
                 <HoverBox>
                     {isDarkMode ? <MdOutlineLightMode className="size-full" /> : <MdOutlineDarkMode className="size-full" />}
                 </HoverBox>
-            </button>}
+                <TargetBox className='right-4'>{isDarkMode ? 'Dark Mode' : 'Light Mode'}</TargetBox>
+            </Popover>
+            </div>}
+
         </div>
     </div>
 }

@@ -1,14 +1,16 @@
+import Alert from "@/Components/Alert";
 import { PageLoader } from "@/Components/Loader";
-import Navabr from "@/Components/Navbar";
 import Scrollbar from "@/Components/Scrollbar";
-import themeChange from "@/Functions/themeChange";
 import "@/styles/globals.css";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }) {
+  const [alerts, setAlert] = useState([])
+  const [isLogin, setLogin] = useState(false)
   return<>
     <Scrollbar/>
     <PageLoader/>
-    <Navabr title='Chat-Bot' themeChange={themeChange}/>
-    <Component {...pageProps} />
+    <Alert alerts={alerts} />
+    <Component {...pageProps} setAlert={setAlert}  />
   </>
 }
