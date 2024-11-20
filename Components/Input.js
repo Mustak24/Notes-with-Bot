@@ -7,7 +7,7 @@ export function Input({id, name=null, type='text', value, placeholder='Enter tex
     const [_, setPasswordShow] = useState(false)
     const [inputType, setInputType] = useState(type || 'text')
     const [iconRotation, setIconRotation] = useState(0)
-    const Id = id || name || String(parseInt(Math.random()*1000))
+    const Id = id || name || placeholder.split(' ').join('')
 
     return (
         <>

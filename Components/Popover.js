@@ -4,8 +4,9 @@ export const PopoverContext = createContext();
 
 export default function ({ className = "", children }) {
   const [isHover, setHover] = useState(false);
+  const [isFocus, setFocus] = useState(false);
 
-  const states = {isHover};
+  const states = { isHover };
 
   return (
     <PopoverContext.Provider value={states}>
@@ -20,11 +21,8 @@ export default function ({ className = "", children }) {
   );
 }
 
-
-
-export function TargetBox({ children, className }) {
+export function TargetBoxInHover({ children, className }) {
   const { isHover } = useContext(PopoverContext);
-
   return (
     <div
       className={`${className} flex items-center justify-center fixed transition-all duration-200 top-full bg-[var(--bgSec)] p-2 px-4 rounded-lg`}
@@ -32,6 +30,31 @@ export function TargetBox({ children, className }) {
         scale: isHover ? "1" : ".8",
         opacity: isHover ? "1" : "0",
         visibility: isHover ? "visible" : "hidden",
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function TargetBoxOnFocusBtn({ children, className }) {
+  const { setFocus } = useContext(PopoverContext);
+  return (
+    <button onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}>
+      {children}
+    </button>
+  );
+}
+
+export function TargetBoxOnFocus({ children, className }) {
+  const { isFocus } = useContext(PopoverContext);
+  return (
+    <div
+      className={`${className} flex items-center justify-center fixed transition-all duration-200 top-full bg-[var(--bgSec)] p-2 px-4 rounded-lg`}
+      style={{
+        scale: isFocus ? "1" : ".8",
+        opacity: isFocus ? "1" : "0",
+        visibility: isFocus ? "visible" : "hidden",
       }}
     >
       {children}

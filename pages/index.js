@@ -1,28 +1,56 @@
 
 import { HoverBox } from "@/Components/Smallcss"
 import Textarea from "@/Components/Textarea"
-import { useState } from "react";
+import { useContext } from "react";
 import { TbSend } from "react-icons/tb";
 import themeChange from "@/Functions/themeChange";
 import alertMsgs from "@/Functions/alertMsgs";
 import Navabar from "@/Components/Navbar";
-import { TypingHeading } from "@/Components/Smallcss";
+import { TypingHeading } from "@/Components/Heading";
+import { _AppContext } from "@/Contexts/AppContext";
+import { useRouter } from "next/router";
+import { verifyUserToken } from "@/Functions/Auth";
+import { createChat } from "@/Functions/fetch";
+import { cookies } from "@/Functions/halper";
 
 
-export default function Home({setAlert}) {
+export async function getServerSideProps({req}){
+  const token = req.cookies['user-token'];
+  const isLogin = Boolean(token && (await verifyUserToken(token)))
+  return {props: {isLogin}};
+}
 
-  const [msg, setMsg] = useState('')
+export default function ({isLogin, alert}) {
+  
+  const {setAlert, setNewChat, newChat} = useContext(_AppContext)
 
-  function sendMsg(){
-    if(!msg) return setAlert((alerts) => [...alerts, alertMsgs('empty-msg')])
+  const router = useRouter()
+
+  if(alert) setAlert((alerts) => [...alerts, alert])
+
+  async function sendMsg(){
+    if(!newChat) return setAlert((alerts) => [...alerts, alertMsgs('empty-msg')])
+    setAlert((alerts) => [...alerts, {type: 'info', title: 'your Massege will be Send.'}])
+    if(!isLogin) return router.push('/chats/new')
       
+    createChat(cookies('user-token'), newChat).then(res => {
+      console.log(res)
+      if(!res.miss) return setAlert((alerts) => [...alerts, res.alert]);
+      router.push(`/chats/${res.chatId}`);
+    })
+    
   }
 
   return <>
-    <Navabar themeChange={themeChange}/>
+    <Navabar isLogin={isLogin} themeChange={themeChange}/>
     <main className="flex items-center justify-center flex-col w-full h-full px-5 ">
-      <TypingHeading className="font-serif text-2xl text-center my-5" text="What Can I fix ... ?" speed={150} />
-      <Textarea onChange={(e)=>setMsg(e.target.value)} className="max-w-[900px] gap-1 rounded-[20px]" required={true}>
+      <TypingHeading className="font-serif text-2xl text-center my-5" speed={150} >What Can I fix ... ?</TypingHeading>
+      <Textarea className="max-w-[900px] gap-1 rounded-[20px]" required={true}
+        onChange={(e) => setNewChat({
+          name: 'new-Chat',
+          msg: e.target.value
+        })}
+      >
         <button onClick={sendMsg}>
           <HoverBox><TbSend className="size-full" /></HoverBox>
         </button>
@@ -30,3 +58,5 @@ export default function Home({setAlert}) {
     </main>
   </> 
 }
+
+

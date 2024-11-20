@@ -1,13 +1,16 @@
 import Link from "next/link"
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { NormalBtn } from "./Button";
 import { CgProfile } from "react-icons/cg";
 import { UnderlineBox, Navicon, HoverBox } from "./Smallcss"
-import Popover, {TargetBox} from '@/Components/Popover'
+import Popover, {TargetBoxInHover} from '@/Components/Popover'
 import { IoLogoGithub } from "react-icons/io";
 import { IoSearchSharp } from "react-icons/io5";
 import { TbBrandHeadlessui } from "react-icons/tb";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
+import { _AppContext } from "@/Contexts/AppContext";
+import { useRouter } from "next/router";
+import alertMsgs from "@/Functions/alertMsgs";
 
 
 
@@ -18,13 +21,24 @@ const navigation = {
         {title: 'Notes', href: '/notes'},
         {title: 'Chats', href: '/chats'},
     ],
-    'login-page': []
+    'login-page': [],
+    'signup-page': []
 }
 
-export default function Navabar({navigator='user', title='Chat-Bot', logo=<TbBrandHeadlessui className="size-full" />, darkMode=true, themeChange=()=>{}}){
+export default function Navabar({
+    darkMode=true, 
+    navigator='user', 
+    title='Chat-Bot', 
+    themeChange=()=>{},
+    logo=<TbBrandHeadlessui className="size-full" />, 
+    isLogin=false
+}){
 
+    const {setAlert} = useContext(_AppContext);
     const [isDarkMode, setDarkMode] = useState(darkMode)
     const [isNavOpen, setNavOpen] = useState(false)
+
+    const router = useRouter()
 
     function handleDarkMode(){
         themeChange(!isDarkMode);
@@ -35,7 +49,14 @@ export default function Navabar({navigator='user', title='Chat-Bot', logo=<TbBra
         setDarkMode(window.matchMedia('(prefer-color-schema: dark)').matches)
     }, [])
 
-    return <div className="sticky z-[500] top-0 w-full flex items-center justify-between px-5 h-16 font-sans text-sm shadow-[0_0_1px] backdrop-blur-sm bg-transparent">
+
+    function logout(){
+        document.cookie = 'user-token=;'
+        setAlert((alerts) => [...alerts, alertMsgs('logout-done')])
+        router.push('/')
+    }
+
+    return <div className="sticky shrink-0 z-[500] top-0 w-full flex items-center justify-between px-5 min-h-16 font-sans text-sm shadow-[0_0_1px] backdrop-blur-sm bg-transparent">
         <div>
             {/* For Pc */}
             <div className="flex items-center gap-5 max-sm:hidden">
@@ -74,16 +95,18 @@ export default function Navabar({navigator='user', title='Chat-Bot', logo=<TbBra
                 <button><HoverBox className="sm:hidden"><IoSearchSharp className="size-full" /></HoverBox></button>
             </>}
 
-            <Popover>
-                <HoverBox><IoLogoGithub className="size-full" /></HoverBox>
-                <TargetBox>Git-Hub</TargetBox>
-            </Popover>
+            <Link href={'https://github.com/Mustak24/Notes-with-Bot'} target="_black">
+                <Popover>
+                    <HoverBox><IoLogoGithub className="size-full" /></HoverBox>
+                    <TargetBoxInHover>Git-Hub</TargetBoxInHover>
+                </Popover>
+            </Link>
 
             <Popover>
                 <HoverBox><CgProfile className="size-full" /></HoverBox>
-                <TargetBox>
-                    <Link href={'/login'} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">Login</Link>
-                </TargetBox>
+                <TargetBoxInHover>
+                    {!isLogin ? <Link href={'/login'} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">Login</Link> : <button onClick={logout} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">Log out</button>}
+                </TargetBoxInHover>
             </Popover>
 
             {darkMode && <div onClick={handleDarkMode}>
@@ -91,7 +114,7 @@ export default function Navabar({navigator='user', title='Chat-Bot', logo=<TbBra
                 <HoverBox>
                     {isDarkMode ? <MdOutlineLightMode className="size-full" /> : <MdOutlineDarkMode className="size-full" />}
                 </HoverBox>
-                <TargetBox className='right-4'>{isDarkMode ? 'Dark Mode' : 'Light Mode'}</TargetBox>
+                <TargetBoxInHover className='right-4'>{isDarkMode ? 'Dark Mode' : 'Light Mode'}</TargetBoxInHover>
             </Popover>
             </div>}
 
