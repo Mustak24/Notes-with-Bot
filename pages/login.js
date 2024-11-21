@@ -15,7 +15,7 @@ import { verifyUserToken } from "@/Functions/Auth";
 export async function getServerSideProps({req}){
     const token = req.cookies['user-token']
     if(!token) return {props: {}}
-    if(!(await verifyUserToken(token))) return {props: {}}
+    if(!(await verifyUserToken(token, req))) return {props: {}}
     return {
         redirect:{
             destination: '/'
@@ -40,7 +40,7 @@ export default function(){
 
         setAlert((alerts) => [...alerts, alertMsgs('info-send')])
 
-        let res = await fetch(`${process.env.NEXT_PUBLIC_API_ORIGIN}/api/user/login`, {
+        let res = await fetch(`${window.location.origin}/api/user/login`, {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {'content-type': 'application/json'}
@@ -50,7 +50,7 @@ export default function(){
         setLoading(false);
 
         setAlert((alerts) => [...alerts, res.alert]);
-        if(!res.miss) return setAlert((alerts) => [...alerts, alertMsgs('login-fail')]);
+        if(!res.miss) return ;
         document.cookie = `user-token=${res.token}`
         return router.push('/')
     }

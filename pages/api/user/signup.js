@@ -5,7 +5,7 @@ import UserSchema from "../Schemas/UserSchema";
 import connectToDb from "../Middlewares/connectToDb";
 
 async function callback(req, res) {
-    if(req.method === 'GET') return res.json({miss: false, alert:alertMsgs('internal-server-error')});
+    if(req.method !== 'POST') return res.json({miss: false, alert:alertMsgs('invalid-method-call')});
     const {username, password} = req.body;
     if(!(username && password)) return res.json({miss: false, alert:alertMsgs('internal-server-error')});
     try{

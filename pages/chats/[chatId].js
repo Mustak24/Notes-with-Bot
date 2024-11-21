@@ -14,21 +14,19 @@ import gemini from "@/Functions/gemini";
 
 export async function getServerSideProps({req, params}) {
   const token = req.cookies['user-token'];
-  const isLogin = token && (await verifyUserToken(token))
+  const isLogin = token && (await verifyUserToken(token, req))
   if(!isLogin) return {props: {isLogin}}
-  const {chatInfo, miss} = await getChat(token, params.chatId)
-  if(!miss) return {redirect: {destination: '/'}, props: {alert: alertMsgs('internal-server-error')}}
   return {
-    props: {isLogin, chatInfo}
+    props: {}
   }
 }
 
-export default function ({isLogin, chatInfo}) {
+export default function () {
 
   const {setAlert} = useContext(_AppContext)
 
     const [msg, setMsg] = useState('');
-    const [chat, setChat] = useState(chatInfo?.chat || []);
+    const [chat, setChat] = useState([]);
 
     const router = useRouter()
 
@@ -84,9 +82,16 @@ export default function ({isLogin, chatInfo}) {
     }
 
     useEffect(() => {
-      console.log(!isLogin, sessionStorage.getItem('user-chat'))
-      if(!isLogin) setChat(JSON.parse(sessionStorage.getItem('user-chat')))
-      scrollChatBox();
+      if(!isLogin){ 
+        setChat(JSON.parse(sessionStorage.getItem('user-chat')))
+        scrollChatBox();
+      } else {
+        getChat(token, params.chatId).then(res => {
+          if(res.miss) return setChat(res.chatInfo?.chat || [])
+          setAlert((alerts) => [...alerts, alertMsgs('internal-server-error')]);
+          return router.push('/')
+        })
+      }
     }, [])
 
   return (<>

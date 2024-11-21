@@ -1,6 +1,11 @@
-export function verifyUserToken(token){
+export function verifyUserToken(token, req){
+
+    const protocol = req.headers['x-forwarded-proto'] || (req.connection.encrypted ? 'https' : 'http');
+    const host = req.headers.host;
+    const origin = `${protocol}://${host}`;
+
     return new Promise(resolve => {
-        fetch(`${process.env.NEXT_PUBLIC_API_ORIGIN}/api/Auth/verify-user-token`, {
+        fetch(`${origin}/api/Auth/verify-user-token`, {
             method: "GET",
             headers: {'content-type': 'application/json', token}
         }).then(res => res.json()).then(res => resolve(res.miss))

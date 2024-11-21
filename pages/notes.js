@@ -9,21 +9,20 @@ import { verifyUserToken } from "@/Functions/Auth";
 import { createNote, fetchAllNotes } from "@/Functions/fetch";
 import { cookies } from "@/Functions/halper";
 import themeChange from "@/Functions/themeChange";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 
 export async function getServerSideProps({req}) {
     const token = req.cookies['user-token']
-    if(!(token && (await verifyUserToken(token)))) return { redirect: { destination: '/login' } }
-    const {notes, miss} = await fetchAllNotes(token)
-    return {props: {notes, miss}}
+    if(!(token && (await verifyUserToken(token, req)))) return { redirect: { destination: '/login' } }
+    return {props: {}}
 }
 
-export default function({notes=[], alert=false}){
+export default function({}){
 
     const {setAlert} = useContext(_AppContext)
 
-    const [Notes, setNotes] = useState(notes)
+    const [notes, setNotes] = useState([])
 
     async function addNewNote(e){
         e.preventDefault()
@@ -35,6 +34,10 @@ export default function({notes=[], alert=false}){
         setNotes((notes) => [...notes, res.note])
     }
 
+    useEffect(() => {
+        fetchAllNotes(cookies('user-token')).then(res => setNotes(res?.notes || []))
+    }, [])
+
     return(<>
         <Navabar isLogin={true} themeChange={themeChange}/>
         <TypingHeading className="text-center text-2xl font-serif my-5"> - Your All Notes -</TypingHeading>
@@ -45,7 +48,7 @@ export default function({notes=[], alert=false}){
                 <LongWidthBnt className="w-full" title="Save" />
             </form>
             <div className="flex flex-wrap gap-2 justify-center w-full">
-                {Notes.map((note, index) => <NotesCard key={index} title={note.title} content={note.content}  />)}
+                {notes.map((note, index) => <NotesCard key={index} title={note.title} content={note.content}  />)}
             </div>
         </main>
     </>)

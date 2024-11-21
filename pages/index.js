@@ -17,7 +17,7 @@ import gemini from "@/Functions/gemini";
 
 export async function getServerSideProps({req}){
   const token = req.cookies['user-token'];
-  const isLogin = Boolean(token && (await verifyUserToken(token)))
+  const isLogin = Boolean(token && (await verifyUserToken(token, req)))
   return {props: {isLogin}};
 }
 

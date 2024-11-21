@@ -17,7 +17,7 @@ import { verifyUserToken } from "@/Functions/Auth";
 export async function getServerSideProps({req}){
     const token = req.cookies['user-token']
     if(!token) return {props: {}}
-    if(!(await verifyUserToken(token))) return {props: {}}
+    if(!(await verifyUserToken(token, req))) return {props: {}}
     return {
         redirect:{
             destination: '/'
@@ -40,7 +40,7 @@ export default function(){
 
         if(!window.navigator.onLine) return setAlert((alerts) => [...alerts, alertMsgs('no-internet')]);
 
-        let res = await fetch(`${process.env.NEXT_PUBLIC_API_ORIGIN}/api/user/signup`, {
+        let res = await fetch(`${window.location.origin}/api/user/signup`, {
             method: 'POST',
             body: JSON.stringify(formData),
             headers: {'content-type': 'application/json'},

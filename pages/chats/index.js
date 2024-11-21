@@ -1,22 +1,30 @@
 import Navbar from "@/Components/Navbar"
 import { _AppContext } from "@/Contexts/AppContext"
 import themeChange from "@/Functions/themeChange"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { fetchAllChats } from "@/Functions/fetch"
 import { verifyUserToken } from "@/Functions/Auth"
 import { TypingHeading } from "@/Components/Heading"
 import Link from "next/link"
+import { cookies } from "@/Functions/halper"
 
 export async function getServerSideProps({req}){
     const token = req.cookies['user-token'];
-    if(!(token && (await verifyUserToken(token)))) return {redirect:{destination: '/login'}}
-    const {chats, miss} = await fetchAllChats(token);
-    return { props: {chats, miss} }
+    if(!(token && (await verifyUserToken(token, req)))) return {redirect:{destination: '/login'}}
+    return { props: {} }
 }
 
-export default function ({chats=[]}){
+export default function (){
     
     const {setAlert} = useContext(_AppContext);
+
+    const [chats, setChats] = useState([])
+
+    useEffect(() => {
+      fetchAllChats(cookies('user-token')).then(res => {
+        setChats(res?.chat || [])
+      })
+    }, [])
     
     return(<>
         <Navbar isLogin={true} themeChange={themeChange}/>
