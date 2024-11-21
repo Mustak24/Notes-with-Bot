@@ -1,13 +1,15 @@
 import alertMsgs from "@/Functions/alertMsgs";
 import connectToDb from "../Middlewares/connectToDb";
-import NotesSchema from "../Schemas/NotesSchema";
+import ChatSchema from "../Schemas/ChatSchema";
 
 async function callback(req, res){
     if(req.method == 'GET') return res.json({miss: false, alert: alertMsgs('invalit-call-method')})
-    const {chatId, Chat} = req.body.chatInfo
+    const {chatId, newMsg} = req.body.chatInfo
     try{
-        const chat = await NotesSchema.findByIdAndUpdate(chatId, {Chat})
-        return res.json({miss: true, chat})
+        let Chat = await ChatSchema.findById(chatId);
+        Chat.chat.push(newMsg)
+        Chat = await Chat.save();
+        return res.json({miss: true, chat: Chat.chat})
     } catch(e){
         console.log(e)
         return res.json({miss: false, alert: alertMsgs('internal-server-error')})

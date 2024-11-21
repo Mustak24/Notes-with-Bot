@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 
 export function UnderlineBox({children, innerText='Hover Me'}){
     return <div className={`relative w-fit flex items-center justify-center after:content-[''] after:absolute after:border-2 after:border-[var(--text)] after:rounded-full after:w-0 sm:hover:after:w-full max-sm:active:after:w-full px-2 after:top-full after:opacity-0 sm:hover:after:opacity-70 max-sm:active:after:opacity-70 after:transition-all sm:duration-200`}>

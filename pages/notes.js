@@ -45,7 +45,7 @@ export default function({notes=[], alert=false}){
                 <LongWidthBnt className="w-full" title="Save" />
             </form>
             <div className="flex flex-wrap gap-2 justify-center w-full">
-                {Notes.map(note => <NotesCard title={note.title} content={note.content}  />)}
+                {Notes.map((note, index) => <NotesCard key={index} title={note.title} content={note.content}  />)}
             </div>
         </main>
     </>)

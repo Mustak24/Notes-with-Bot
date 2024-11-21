@@ -10,6 +10,20 @@ import { _AppContext } from "@/Contexts/AppContext";
 import { useRouter } from "next/router";
 import { verifyUserToken } from "@/Functions/Auth";
 
+
+
+export async function getServerSideProps({req}){
+    const token = req.cookies['user-token']
+    if(!token) return {props: {}}
+    if(!(await verifyUserToken(token))) return {props: {}}
+    return {
+        redirect:{
+            destination: '/'
+        }
+    }
+}
+
+
 export default function(){
     const {setAlert} = useContext(_AppContext);
 
@@ -23,6 +37,8 @@ export default function(){
         let formData = Object.fromEntries(new FormData(e.target));
 
         if(!window.navigator.onLine) return setAlert((alerts) => [...alerts, alertMsgs('no-internet')]);
+
+        setAlert((alerts) => [...alerts, alertMsgs('info-send')])
 
         let res = await fetch(`${process.env.NEXT_PUBLIC_API_ORIGIN}/api/user/login`, {
             method: 'POST',
@@ -57,13 +73,3 @@ export default function(){
     </>)
 }
 
-export async function getServerSideProps({req}){
-    const token = req.cookies['user-token']
-    if(!token) return {props: {}}
-    if(!(await verifyUserToken(token))) return {props: {}}
-    return {
-        redirect:{
-            destination: '/'
-        }
-    }
-}

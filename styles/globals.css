@@ -40,3 +40,9 @@ body, html, #__next {
   flex-direction: column;
   flex-shrink: 0;
 }
+
+
+@keyframes comeFromBottom{
+  0%{transform: translateY(100px); opacity: 0;}
+  100%{transform: translateY(0); opacity: 1;}
+}

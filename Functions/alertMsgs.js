@@ -15,7 +15,8 @@ const alertsMsg = {
     'logout-done': {type: 'info', title: 'Log-Out', dec: 'You are logout successfuly.'},
     'note-create-done': {type: 'success', title: 'Note Save', dec: 'New Note was create successfully.'},
     'info-send': {type: 'info', title: 'Sending ...', dec: 'You Request will be send, wait for response.'},
-    'invalid-method-call': {type: 'error', title: 'Invalid Method', dec: 'You hit api in wrong way, Plese change you method.'}
+    'invalid-method-call': {type: 'error', title: 'Invalid Method', dec: 'You hit api in wrong way, Plese change you method.'},
+    'fail-to-save-chat': {type: 'error', title: 'Fail to Save', dec: 'Due to Internal server error chat do not save !!!' }
 }
 
 

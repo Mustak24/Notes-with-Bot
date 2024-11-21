@@ -10,6 +10,21 @@ import { useRouter } from "next/router";
 import { _AppContext } from "@/Contexts/AppContext";
 import { verifyUserToken } from "@/Functions/Auth";
 
+
+
+
+
+export async function getServerSideProps({req}){
+    const token = req.cookies['user-token']
+    if(!token) return {props: {}}
+    if(!(await verifyUserToken(token))) return {props: {}}
+    return {
+        redirect:{
+            destination: '/'
+        }
+    }
+}
+
 export default function(){
 
     const {setAlert} = useContext(_AppContext);
@@ -59,13 +74,3 @@ export default function(){
 }
 
 
-export async function getServerSideProps({req}){
-    const token = req.cookies['user-token']
-    if(!token) return {props: {}}
-    if(!(await verifyUserToken(token))) return {props: {}}
-    return {
-        redirect:{
-            destination: '/'
-        }
-    }
-}
