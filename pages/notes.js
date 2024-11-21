@@ -28,7 +28,6 @@ export default function({}){
         e.preventDefault()
         setAlert((alerts) => [...alerts, alertMsgs('info-send')])
         const note = Object.fromEntries(new FormData(e.target))
-        console.log(note)
         let res = await createNote(cookies('user-token'), note)
         setAlert((alerts) => [...alerts, res.alert])
         setNotes((notes) => [...notes, res.note])

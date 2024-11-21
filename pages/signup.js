@@ -39,7 +39,10 @@ export default function(){
         let formData = Object.fromEntries(new FormData(event.target));
 
         if(!window.navigator.onLine) return setAlert((alerts) => [...alerts, alertMsgs('no-internet')]);
-
+        
+        setAlert((alerts) => [...alerts, alertMsgs('info-send')])
+        setLoading(true)
+        
         let res = await fetch(`${window.location.origin}/api/user/signup`, {
             method: 'POST',
             body: JSON.stringify(formData),

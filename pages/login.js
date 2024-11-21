@@ -39,6 +39,7 @@ export default function(){
         if(!window.navigator.onLine) return setAlert((alerts) => [...alerts, alertMsgs('no-internet')]);
 
         setAlert((alerts) => [...alerts, alertMsgs('info-send')])
+        setLoading(true)
 
         let res = await fetch(`${window.location.origin}/api/user/login`, {
             method: 'POST',
