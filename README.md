@@ -1,17 +1,18 @@
+For see Website live previwe [Click here](https://ex2404.netlify.app).
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+First, You download repository and open it in code editor:
 
 ```bash
+# And run this command
+npm install
+```
+```bash
+# then run this command 
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
