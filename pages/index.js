@@ -40,18 +40,25 @@ export default function ({isLogin, alert}) {
     setLoading(true)
     setAlert((alerts) => [...alerts, {type: 'info', title: 'your Massege will be Send.'}])
 
-    if(!isLogin){ 
-      let replay = await gemini()
-      sessionStorage.setItem('user-chat', JSON.stringify([
-        {sender: 'self', msg: prompt}, {sender: 'bot', msg: replay}
-      ]))
-      return router.push(`/chats/new`)
-    }
+    try{
+
+      if(!isLogin){ 
+        let replay = await gemini()
+        setLoading(false)
+        sessionStorage.setItem('user-chat', JSON.stringify([
+          {sender: 'self', msg: prompt}, {sender: 'bot', msg: replay}
+        ]))
+        return router.push(`/chats/new`)
+      }
       
-    createChat(cookies('user-token'), newChat).then(res => {
-      if(!res.miss) return setAlert((alerts) => [...alerts, res.alert]);
-      router.push(`/chats/${res.chatId}`);
-    });
+      createChat(cookies('user-token'), {sender: 'self', msg: prompt}).then(res => {
+        setLoading(false)
+        if(!res.miss) return setAlert((alerts) => [...alerts, res.alert]);
+        router.push(`/chats/${res.chatId}`);
+      });
+    } catch(e){
+      setLoading(false)
+    }
 
   }
 

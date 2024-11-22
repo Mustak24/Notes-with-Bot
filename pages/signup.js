@@ -50,9 +50,9 @@ export default function(){
         })
         res = await res.json()
 
+        setLoading(false);
         if(!res.miss) return setAlert((alerts) => [...alerts, res.alert])
 
-        setLoading(false);
         setAlert((alerts) => [...alerts, res.alert]);
         document.cookie = `user-token=${res.token}`
         return router.push('/');

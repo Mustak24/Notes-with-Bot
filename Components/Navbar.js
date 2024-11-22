@@ -73,7 +73,7 @@ export default function Navabar({
             {/* For Mobile */}
             <button onClick={()=>setNavOpen(!isNavOpen)}  className="sm:hidden"><Navicon/></button>  
 
-            <div className="flex items-end z-[-1] justify-center w-[100vw] h-[100vh] fixed left-0 transition-all duration-300 origin-center"
+            <div className="flex items-end bg-[rgb(0,0,0,.7)] z-[-1] justify-center w-[100vw] h-[100vh] fixed left-0 transition-all duration-300 origin-center"
                 style={{
                     opacity: isNavOpen ? '1' : '0',
                     visibility: isNavOpen ? 'visible' : 'hidden',
@@ -81,7 +81,7 @@ export default function Navabar({
                     scale: isNavOpen ? '1' : '0'
                 }}
             >
-                <div className="relative flex flex-col items-start gap-3 w-full h-[70vh] rounded-lg border-[1px] border-[var(--bgSec)] after:content-[''] after:absolute after:top-3 after:w-[100px] after:border-2 after:border-[var(--bgSec)] after:self-center after:rounded-full pt-5 px-5">
+                <div className="relative flex flex-col bg-[var(--bg)] items-start gap-3 w-full h-[70vh] rounded-lg border-[1px] border-[var(--bgSec)] after:content-[''] after:absolute after:top-3 after:w-[100px] after:border-2 after:border-[var(--bgSec)] after:self-center after:rounded-full pt-5 px-5">
                 {navigation[navigator].map((element, index) => (<Link key={index} href={element.href} className="opacity-70 hover:opacity-100 font-semibold w-full">
                         <UnderlineBox className='' innerText={element.title} />
                     </Link>))}

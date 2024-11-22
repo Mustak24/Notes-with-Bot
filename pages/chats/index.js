@@ -22,7 +22,7 @@ export default function (){
 
     useEffect(() => {
       fetchAllChats(cookies('user-token')).then(res => {
-        setChats(res?.chat || [])
+        setChats(res?.chats || [])
       })
     }, [])
     

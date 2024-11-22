@@ -10,30 +10,29 @@ import { verifyUserToken } from "@/Functions/Auth";
 import { getChat, updateChat } from "@/Functions/fetch";
 import alertMsgs from "@/Functions/alertMsgs";
 import gemini from "@/Functions/gemini";
+import { cookies } from "@/Functions/halper";
 
 
 export async function getServerSideProps({req, params}) {
   const token = req.cookies['user-token'];
   const isLogin = token && (await verifyUserToken(token, req))
-  if(!isLogin) return {props: {isLogin}}
-  return {
-    props: {}
-  }
+  return {props: {isLogin}}
 }
 
-export default function () {
+export default function ({isLogin}) {
 
   const {setAlert} = useContext(_AppContext)
 
     const [msg, setMsg] = useState('');
     const [chat, setChat] = useState([]);
+    const [isLoading, setLoading] = useState(false)
 
     const router = useRouter()
 
     async function isNotLoginChat(){
 
       if(!window.navigator.onLine) return setAlert((alerts) => [...alerts, alertMsgs('no-internet')]);
-
+      setLoading(true)
       setChat([...chat, {sender: 'self', msg}])
       scrollChatBox()
 
@@ -41,39 +40,44 @@ export default function () {
         setChat([...chat, {sender: 'self', msg}, {sender: 'bot', msg: <ChatLoaingBox/> }])
         scrollChatBox()
       }, 300)
-
-      const replay = await gemini(msg);
-      clearTimeout(timer);
-
-      setChat([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }])
-      
-      return sessionStorage.setItem('user-chat', JSON.stringify([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }]))
+      try{
+        const replay = await gemini(msg);
+        clearTimeout(timer);
+        
+        setChat([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }])
+        
+        return sessionStorage.setItem('user-chat', JSON.stringify([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }]))
+      } catch(e) {return setLoading(false) }
+      finally{return setLoading(false)}
     }
 
     async function isLoginChat(){
       
       if(!window.navigator.onLine) return setAlert((alerts) => [...alerts, alertMsgs('no-internet')]);
-      
+      setLoading(true)
       const {chatId} = router.query
 
-          let res = await updateChat({chatId, newMsg: {sender: 'self', msg}})
-          if(!res.miss) return setAlert((alerts) => [...alerts, alertMsgs('fail-to-save-chat')])
+      try{
+        let res = await updateChat({chatId, newMsg: {sender: 'self', msg}})
+        if(!res.miss) return setAlert((alerts) => [...alerts, alertMsgs('fail-to-save-chat')])
           
           setChat(res.chat) 
           scrollChatBox()
-
+          
           let timer = setTimeout(() => {
             setChat((chat) => [...chat, {sender: 'bot', msg: <ChatLoaingBox/> }])
             scrollChatBox()
           }, 300)
-
+          
           const replay = await gemini(msg);
           clearTimeout(timer);
           res = await updateChat({chatId, newMsg: {sender: 'bot', msg:replay}})
           if(!res.miss) return setAlert((alerts) => [...alerts, alertMsgs('fail-to-save-chat')])
-    
-          setChat(res.chat)
-          return scrollChatBox()
+            
+            setChat(res.chat)
+            return scrollChatBox()
+        } catch(e){ return setLoading(false);
+        } finally{ return setLoading(false) }
     }
 
     function scrollChatBox(){
@@ -86,7 +90,7 @@ export default function () {
         setChat(JSON.parse(sessionStorage.getItem('user-chat')))
         scrollChatBox();
       } else {
-        getChat(token, params.chatId).then(res => {
+        getChat(cookies('user-token'), router.query.chatId).then(res => {
           if(res.miss) return setChat(res.chatInfo?.chat || [])
           setAlert((alerts) => [...alerts, alertMsgs('internal-server-error')]);
           return router.push('/')
@@ -101,7 +105,7 @@ export default function () {
         {(chat || []).map((msgInfo, index) => <MsgBox key={index} msg={msgInfo.msg} sender={msgInfo.sender} time={msgInfo.time} />)}
       </div>
       <Textarea value={msg} onChange={(e) => setMsg(e.target.value)} className="max-w-[1000px] min-h-fit max-h-[200px] gap-1 rounded-full" >
-            <button  onClick={isLogin ? isLoginChat : isNotLoginChat} className="bg-transparent">
+            <button disabled={isLoading} onClick={isLogin ? isLoginChat : isNotLoginChat} className="bg-transparent">
               <TbSend className="min-w-10 min-h-10 rounded-full relative left-3 p-2 bg-[var(--text)] text-[var(--bg)] opacity-100 sm:hover:opacity-75 active:opacity-75" />
             </button>
       </Textarea>
