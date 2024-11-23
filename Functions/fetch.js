@@ -36,11 +36,11 @@ export function updateChat(chatInfo){
     })
 }
 
-export function deleteChat(chatId){
+export function deleteChat(chatid){
     return new Promise(resolve => {
         fetch(`${window.location.origin}/api/chats/delete`, {
             method: 'GET',
-            headers: {'content-type': 'application/json', chatId}
+            headers: {'content-type': 'application/json', chatid}
         }).then(res => res.json()).then(res => resolve(res))
     })
 }
@@ -69,11 +69,11 @@ export function createNote(token, note){
     })
 }
 
-export function deleteNote(noteId){
+export function deleteNote(noteid){
     return new Promise(resolve => {
         fetch(`${window.location.origin}/api/notes/delete`, {
             method: 'GET',
-            headers: {'content-type': 'application/json', noteId}
+            headers: {'content-type': 'application/json', noteid}
         }).then(res => res.json()).then(res => resolve(res))
     })
 }
