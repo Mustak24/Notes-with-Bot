@@ -45,6 +45,7 @@ export default function ({isLogin}) {
         clearTimeout(timer);
         
         setChat([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }])
+        scrollChatBox()
         
         return sessionStorage.setItem('user-chat', JSON.stringify([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }]))
       } catch(e) {return setLoading(false) }
