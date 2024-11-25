@@ -2,7 +2,7 @@
 import Textarea from "@/Components/Textarea";
 import { useRouter } from "next/router";
 import { TbSend } from "react-icons/tb";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useTransition } from "react";
 import Navabar from "@/Components/Navbar";
 import themeChange from "@/Functions/themeChange";
 import { _AppContext } from "@/Contexts/AppContext";
@@ -15,7 +15,7 @@ import { cookies } from "@/Functions/halper";
 
 export async function getServerSideProps({req, params}) {
   const token = req.cookies['user-token'];
-  const isLogin = token && (await verifyUserToken(token, req))
+  const isLogin = Boolean(token && (await verifyUserToken(token, req)))
   return {props: {isLogin}}
 }
 
@@ -45,12 +45,16 @@ export default function ({isLogin}) {
         clearTimeout(timer);
         
         setChat([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }])
-        scrollChatBox()
+        sessionStorage.setItem('user-chat', JSON.stringify([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }]))
         
-        return sessionStorage.setItem('user-chat', JSON.stringify([...chat, {sender: 'self', msg}, {sender: 'bot', msg: replay }]))
+        return setTimeout(()=>scrollChatBox(),100)
       } catch(e) {return setLoading(false) }
       finally{return setLoading(false)}
     }
+
+    useTransition(() => {
+      scrollChatBox()
+    }, [chat])
 
     async function isLoginChat(){
       
@@ -75,8 +79,8 @@ export default function ({isLogin}) {
           res = await updateChat({chatId, newMsg: {sender: 'bot', msg:replay}})
           if(!res.miss) return setAlert((alerts) => [...alerts, alertMsgs('fail-to-save-chat')])
             
-            setChat(res.chat)
-            return scrollChatBox()
+          setChat(res.chat)
+          return setTimeout(()=>scrollChatBox(),100)
         } catch(e){ return setLoading(false);
         } finally{ return setLoading(false) }
     }
@@ -87,9 +91,9 @@ export default function ({isLogin}) {
     }
 
     useEffect(() => {
+      scrollChatBox();
       if(!isLogin){ 
         setChat(JSON.parse(sessionStorage.getItem('user-chat')))
-        scrollChatBox();
       } else {
         getChat(cookies('user-token'), router.query.chatId).then(res => {
           if(res.miss) return setChat(res.chatInfo?.chat || [])
