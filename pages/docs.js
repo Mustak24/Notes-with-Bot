@@ -1,14 +1,12 @@
-import { TypingHeading } from "@/Components/Heading";
+
 import Navabar from "@/Components/Navbar"
 import { _AppContext } from "@/Contexts/AppContext";
-import themeChange from "@/Functions/themeChange"
-import { useRouter } from "next/router";
 
 export default function({isLogin=false}){
 
 
     return(<>
-        <Navabar isLogin={isLogin} themeChange={themeChange}/>      
+        <Navabar isLogin={isLogin}/>      
         <main className="w-full h-full flex items-center flex-col p-5 relative gap-10">
             <div className="flex items-center justify-center">
             </div>

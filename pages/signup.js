@@ -2,9 +2,8 @@ import { Input } from "@/Components/Input";
 import { TypingHeading } from "@/Components/Heading";
 import Button, { LongWidthBnt } from "@/Components/Button";
 import Navabar from "@/Components/Navbar";
-import themeChange from "@/Functions/themeChange";
 import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import alertMsgs from "@/Functions/alertMsgs";
 import { useRouter } from "next/router";
 import { _AppContext } from "@/Contexts/AppContext";
@@ -60,7 +59,7 @@ export default function(){
 
 
     return (<>
-        <Navabar navigator="signup-page" themeChange={themeChange} />
+        <Navabar navigator="signup-page" />
         <main className="w-full h-full flex items-center flex-col justify-center p-5">
             <TypingHeading className="font-serif text-2xl my-5">- Sign Up Form -</TypingHeading>
             <form onSubmit={handleSubmit} className="flex items-center flex-col gap-4 max-w-[500px] w-full" >

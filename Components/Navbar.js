@@ -11,6 +11,7 @@ import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import { _AppContext } from "@/Contexts/AppContext";
 import { useRouter } from "next/router";
 import alertMsgs from "@/Functions/alertMsgs";
+import themeChange from "@/Functions/themeChange";
 
 
 
@@ -29,7 +30,6 @@ export default function Navabar({
     darkMode=true, 
     navigator='user', 
     title='Chat-Bot', 
-    themeChange=()=>{},
     logo=<TbBrandHeadlessui className="size-full" />, 
     isLogin=false
 }){

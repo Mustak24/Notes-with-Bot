@@ -3,7 +3,6 @@ import { HoverBox } from "@/Components/Smallcss"
 import Textarea from "@/Components/Textarea"
 import { useContext, useState } from "react";
 import { TbSend } from "react-icons/tb";
-import themeChange from "@/Functions/themeChange";
 import alertMsgs from "@/Functions/alertMsgs";
 import Navabar from "@/Components/Navbar";
 import { TypingHeading } from "@/Components/Heading";
@@ -63,7 +62,7 @@ export default function ({isLogin, alert}) {
   }
 
   return <>
-    <Navabar isLogin={isLogin} themeChange={themeChange}/>
+    <Navabar isLogin={isLogin}/>
     <main className="flex items-center justify-center flex-col w-full h-full px-5 ">
       <TypingHeading className="font-serif text-2xl text-center my-5" speed={150} >What Can I fix ... ?</TypingHeading>
       <Textarea className="max-w-[900px] gap-1 rounded-[20px]" required={true}

@@ -88,11 +88,11 @@ export function updateNote(noteInfo){
     })
 }
 
-export function getNote(noteId){
+export function getNote(noteid){
     return new Promise(resolve => {
         fetch(`${window.location.origin}/api/notes/getnote`, {
             method: 'GET',
-            headers: {'content-type': 'application/json', noteId}
+            headers: {'content-type': 'application/json', noteid}
         }).then(res => res.json()).then(res => resolve(res))
     })
 }

@@ -1,6 +1,5 @@
-import Navbar from "@/Components/Navbar"
-import { _AppContext } from "@/Contexts/AppContext"
-import themeChange from "@/Functions/themeChange"
+import Navbar from "@/Components/Navbar";
+import { _AppContext } from "@/Contexts/AppContext";
 import { useContext, useEffect, useState } from "react"
 import { deleteChat, fetchAllChats } from "@/Functions/fetch"
 import { verifyUserToken } from "@/Functions/Auth"
@@ -38,7 +37,7 @@ export default function (){
     }, [])
     
     return(<>
-        <Navbar isLogin={true} themeChange={themeChange}/>
+        <Navbar isLogin={true} />
         <main className="flex items-center justify-center flex-col w-full h-full px-5 ">
             <TypingHeading className="my-10 font-serif text-2xl">- All Old Chats -</TypingHeading>
             <div className="flex w-full h-full flex-wrap gap-2 justify-center">

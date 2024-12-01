@@ -2,7 +2,6 @@ import { Input } from "@/Components/Input";
 import { TypingHeading } from "@/Components/Heading";
 import Button, { LongWidthBnt } from "@/Components/Button";
 import Navabar from "@/Components/Navbar";
-import themeChange from "@/Functions/themeChange";
 import Link from "next/link";
 import { useContext, useState } from "react";
 import alertMsgs from "@/Functions/alertMsgs";
@@ -57,7 +56,7 @@ export default function(){
     }
 
     return (<>
-        <Navabar navigator="login-page" themeChange={themeChange}/>
+        <Navabar navigator="login-page"/>
         <main className="w-full h-full flex items-center flex-col justify-center p-5">
             <TypingHeading className="font-serif text-2xl my-5">- Login Form -</TypingHeading>
             <form onSubmit={handleSubmit} className="flex items-center flex-col gap-4 max-w-[500px] w-full" >

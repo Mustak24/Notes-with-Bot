@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import { TbSend } from "react-icons/tb";
 import { useContext, useEffect, useState, useTransition } from "react";
 import Navabar from "@/Components/Navbar";
-import themeChange from "@/Functions/themeChange";
 import { _AppContext } from "@/Contexts/AppContext";
 import { verifyUserToken } from "@/Functions/Auth";
 import { getChat, updateChat } from "@/Functions/fetch";
@@ -104,7 +103,7 @@ export default function ({isLogin}) {
     }, [])
 
   return (<>
-    <Navabar isLogin={isLogin} themeChange={themeChange} />
+    <Navabar isLogin={isLogin} />
     <main className="flex items-center justify-center flex-col w-full h-full px-5 py-20 gap-5 overflow-hidden">
       <div id="chat-box" className="w-full max-w-[1000px] h-full flex flex-col gap-2 items-center shrink-0 overflow-scroll">
         {(chat || []).map((msgInfo, index) => <MsgBox key={index} msg={msgInfo.msg} sender={msgInfo.sender} time={msgInfo.time} />)}
