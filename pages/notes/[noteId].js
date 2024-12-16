@@ -22,7 +22,6 @@ export default function (){
     useEffect(() => {
         let noteId = router.query.noteId;
         getNote(noteId).then(res => {
-            console.log(res)
             setNote(res.note);
         })
     }, [])

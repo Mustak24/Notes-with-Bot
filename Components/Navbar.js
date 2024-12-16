@@ -12,6 +12,7 @@ import { _AppContext } from "@/Contexts/AppContext";
 import { useRouter } from "next/router";
 import alertMsgs from "@/Functions/alertMsgs";
 import themeChange from "@/Functions/themeChange";
+import ShowIf, { ShowElse } from "./Helper/ShowIf";
 
 
 
@@ -105,7 +106,26 @@ export default function Navabar({
             <Popover>
                 <HoverBox><CgProfile className="size-full" /></HoverBox>
                 <TargetBoxInHover>
-                    {!isLogin ? <Link href={'/login'} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">Login</Link> : <button onClick={logout} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">Log out</button>}
+                    <div className="flex items-center justify-center flex-col gap-2">
+                        <ShowIf when={isLogin}>
+                            <button onClick={()=>router.push('/profile')} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">
+                                Profile
+                            </button>
+                            <button onClick={logout} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">
+                                Log out
+                            </button>
+                        <ShowIf when={!isLogin}>
+                            <Link href={'/login'} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">
+                                Login
+                            </Link> 
+                        </ShowIf>
+                        </ShowIf>
+                        <ShowIf when={!isLogin}>
+                            <Link href={'/login'} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">
+                                Login
+                            </Link> 
+                        </ShowIf>
+                    </div>
                 </TargetBoxInHover>
             </Popover>
 

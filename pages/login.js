@@ -24,7 +24,7 @@ export async function getServerSideProps({req}){
 
 
 export default function(){
-    const {setAlert} = useContext(_AppContext);
+    const {setAlert, setUserInfo, setUsername} = useContext(_AppContext);
 
     const [isLoading, setLoading] = useState(false)
 
@@ -51,6 +51,8 @@ export default function(){
 
         setAlert((alerts) => [...alerts, res.alert]);
         if(!res.miss) return ;
+        setUserInfo(res.userInfo);
+        setUsername(res.userInfo.username)
         document.cookie = `user-token=${res.token}`
         return router.push('/')
     }

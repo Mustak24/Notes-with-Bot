@@ -17,7 +17,7 @@ async function callback(req, res) {
 
         const token = jwt.sign({id: user._id}, process.env.JWT_KEY);
         res.cookies = {token}
-        return res.json({miss: true, alert: alertMsgs('login-done'), token})
+        return res.json({miss: true, alert: alertMsgs('login-done'), token, userInfo: {username: user.username}})
     } catch(e){
         console.log(e)
         return res.json({miss: false, alert: alertMsgs('internal-server-error')});
