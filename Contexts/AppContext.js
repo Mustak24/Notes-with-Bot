@@ -6,12 +6,10 @@ export const _AppContext = createContext()
 export default function AppContextProvider({children}){
     const [test, setTest] = useState('test');
     const [alerts, setAlert] = useState([]);
-    const [userInfo, setUserInfo] = useState({});
 
     const states = {
         test, setTest,
         alerts, setAlert,
-        userInfo, setUserInfo,
     }
 
     useEffect(() => {

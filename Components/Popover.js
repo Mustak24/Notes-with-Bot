@@ -24,7 +24,7 @@ export function TargetBoxInHover({ children, className }) {
   const { isHover } = useContext(PopoverContext);
   return (
     <div
-      className={`${className} flex items-center justify-center fixed transition-all duration-200 top-full bg-[var(--bgSec)] p-2 px-4 rounded-lg`}
+      className={`${className} whitespace-nowrap flex items-center justify-center absolute transition-all duration-200 top-full bg-[var(--bgSec)] p-2 px-4 rounded-lg`}
       style={{
         scale: isHover ? "1" : ".8",
         opacity: isHover ? "1" : "0",

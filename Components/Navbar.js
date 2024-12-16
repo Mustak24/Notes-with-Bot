@@ -114,11 +114,6 @@ export default function Navabar({
                             <button onClick={logout} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">
                                 Log out
                             </button>
-                        <ShowIf when={!isLogin}>
-                            <Link href={'/login'} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">
-                                Login
-                            </Link> 
-                        </ShowIf>
                         </ShowIf>
                         <ShowIf when={!isLogin}>
                             <Link href={'/login'} className="w-full h-full bg-[var(--text)] text-[var(--bg)] active:opacity-90 sm:hover:opacity-90 px-5 py-2 rounded-lg">
