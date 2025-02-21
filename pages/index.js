@@ -42,7 +42,7 @@ export default function ({isLogin, alert}) {
     try{
 
       if(!isLogin){ 
-        let replay = await gemini()
+        let replay = await gemini(prompt);
         setLoading(false)
         sessionStorage.setItem('user-chat', JSON.stringify([
           {sender: 'self', msg: prompt}, {sender: 'bot', msg: replay}

@@ -12,6 +12,7 @@ export default async function gemini(msg) {
     const result = await model.generateContent(msg);
     return result.response.text();
   } catch(e){
+    console.log(e)
     return 'Internal Server Error Come in Bot Api'
   }
 }

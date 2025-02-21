@@ -11,7 +11,8 @@ import alertMsgs from "@/Functions/alertMsgs"
 
 export async function getServerSideProps({req}){
     const token = req.cookies['user-token'];
-    if(!(token && (await verifyUserToken(token, req)))) return {redirect:{destination: '/login'}}
+    let isVerify = await verifyUserToken(token, req);
+    if(!(token && isVerify)) return {redirect:{destination: '/login'}}
     return { props: {} }
 }
 
