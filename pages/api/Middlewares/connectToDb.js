@@ -4,7 +4,7 @@ import mongoose  from 'mongoose';
 
 export default async function connectToDb(req, res ,callback){
     if(mongoose.connections[0].readyState) return callback(req, res);
-    let url = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@notes-with-bot.ff84r.mongodb.net/WebsiteData`;
+    let url = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.njg0rzp.mongodb.net/Notes-With-Bot`;
     try{
         await mongoose.connect(url);
         return callback(req, res);

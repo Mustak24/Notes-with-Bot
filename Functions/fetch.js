@@ -1,3 +1,12 @@
+export function getUser(token){
+    return new Promise(resolve => {
+        fetch(`${window.location.origin}/api/user/get-user`, {
+            method: 'GET',
+            headers: {'content-type': 'application/json', token}
+        }).then(res => res.json()).then(res => resolve(res))
+    })
+}
+
 export function fetchAllChats(token){
     return new Promise(resolve => {
         fetch(`${window.location.origin}/api/chats/getall`, {

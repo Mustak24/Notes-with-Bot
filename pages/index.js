@@ -65,7 +65,7 @@ export default function ({isLogin, alert}) {
     <Navabar isLogin={isLogin}/>
     <main className="flex items-center justify-center flex-col w-full h-full px-5 ">
       <TypingHeading className="font-serif text-2xl text-center my-5" speed={150} >What Can I fix ... ?</TypingHeading>
-      <Textarea className="max-w-[900px] gap-1 rounded-[20px]" required={true}
+      <Textarea onEnter={sendMsg} className="max-w-[900px] gap-1 rounded-[20px]" required={true}
         onChange={(e) => setPrompt(e.target.value)}
       >
         <button disabled={isLoading} onClick={sendMsg}>

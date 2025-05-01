@@ -12,7 +12,8 @@ import { _AppContext } from "@/Contexts/AppContext";
 import { useRouter } from "next/router";
 import alertMsgs from "@/Functions/alertMsgs";
 import themeChange from "@/Functions/themeChange";
-import ShowIf, { ShowElse } from "./Helper/ShowIf";
+import ShowIf from "./Helper/ShowIf";
+import { BiWorld } from "react-icons/bi";
 
 
 
@@ -95,6 +96,13 @@ export default function Navabar({
                 <NormalBtn className="max-sm:hidden"><span className="text-nowrap text-clip">Search Documentation ...</span></NormalBtn>
                 <button><HoverBox className="sm:hidden"><IoSearchSharp className="size-full" /></HoverBox></button>
             </>}
+
+            <Link href={'/global-chat'}>
+                <Popover>
+                    <HoverBox><BiWorld className="size-full" /></HoverBox>
+                    <TargetBoxInHover>Global Chat</TargetBoxInHover>
+                </Popover>
+            </Link>
 
             <Link href={'https://github.com/Mustak24/Notes-with-Bot'} target="_black">
                 <Popover>

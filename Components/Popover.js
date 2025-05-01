@@ -29,6 +29,7 @@ export function TargetBoxInHover({ children, className }) {
         scale: isHover ? "1" : ".8",
         opacity: isHover ? "1" : "0",
         visibility: isHover ? "visible" : "hidden",
+        transform: 'translatey(10px)'
       }}
     >
       {children}

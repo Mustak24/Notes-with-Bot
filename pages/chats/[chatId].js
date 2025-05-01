@@ -108,7 +108,7 @@ export default function ({isLogin}) {
       <div id="chat-box" className="w-full max-w-[1000px] h-full flex flex-col gap-2 items-center shrink-0 overflow-scroll">
         {(chat || []).map((msgInfo, index) => <MsgBox key={index} msg={msgInfo.msg} sender={msgInfo.sender} time={msgInfo.time} />)}
       </div>
-      <Textarea value={msg} onChange={(e) => setMsg(e.target.value)} className="max-w-[1000px] min-h-fit max-h-[200px] gap-1 rounded-full" >
+      <Textarea onEnter={isLogin ? isLoginChat : isNotLoginChat} value={msg} onChange={(e) => setMsg(e.target.value)} className="max-w-[1000px] min-h-fit max-h-[200px] gap-1 rounded-full" >
             <button disabled={isLoading} onClick={isLogin ? isLoginChat : isNotLoginChat} className="bg-transparent">
               <TbSend className="min-w-10 min-h-10 rounded-full relative left-3 p-2 bg-[var(--text)] text-[var(--bg)] opacity-100 sm:hover:opacity-75 active:opacity-75" />
             </button>
